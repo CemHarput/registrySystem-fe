@@ -15,7 +15,7 @@ const DesktopMenu = ({ toggleBookMenu, isBookMenuOpen }) => {
   };
 
   return (
-    <div className="flex space-x-4">
+    <div className="flex">
       <NavLink href="#" label="Dashboard" />
       <button
         onClick={toggleBookMenu}

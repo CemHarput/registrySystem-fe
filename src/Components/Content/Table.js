@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Table() {
+  const [books, setBook] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:8080/api/v1/books")
+      .then((response) => response.json())
+      .then((books) => setBook(books))
+      .catch((error) => console.error("Error while fetching books:", error));
+  }, []);
+
   return (
     <div class="flex flex-col">
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -13,35 +21,38 @@ export default function Table() {
                     #
                   </th>
                   <th scope="col" class="px-6 py-4">
-                    First
+                    Book Title
                   </th>
                   <th scope="col" class="px-6 py-4">
-                    Last
+                    Author
                   </th>
                   <th scope="col" class="px-6 py-4">
-                    Handle
+                    Price
                   </th>
+                  <th scope="col" class="px-6 py-4">
+                    Stock Quantity
+                  </th>
+                  <th>Creation Date</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                  <td class="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                  <td class="whitespace-nowrap px-6 py-4">Mark</td>
-                  <td class="whitespace-nowrap px-6 py-4">Otto</td>
-                  <td class="whitespace-nowrap px-6 py-4">@mdo</td>
-                </tr>
-                <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                  <td class="whitespace-nowrap px-6 py-4 font-medium">2</td>
-                  <td class="whitespace-nowrap px-6 py-4">Jacob</td>
-                  <td class="whitespace-nowrap px-6 py-4">Thornton</td>
-                  <td class="whitespace-nowrap px-6 py-4">@fat</td>
-                </tr>
-                <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                  <td class="whitespace-nowrap px-6 py-4 font-medium">3</td>
-                  <td class="whitespace-nowrap px-6 py-4">Larry</td>
-                  <td class="whitespace-nowrap px-6 py-4">Wild</td>
-                  <td class="whitespace-nowrap px-6 py-4">@twitter</td>
-                </tr>
+                {books.map((book) => (
+                  <tr
+                    key={book.id}
+                    class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                  >
+                    <td class="whitespace-nowrap px-6 py-4">{book.ID}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{book.title}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{book.author}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{book.price}</td>
+                    <td class="whitespace-nowrap px-6 py-4">
+                      {book.stockQuantity}
+                    </td>
+                    <td class="whitespace-nowrap px-6 py-4">
+                      {book.CreatedAt}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
