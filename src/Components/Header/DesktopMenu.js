@@ -10,6 +10,9 @@ const DesktopMenu = ({ toggleBookMenu, isBookMenuOpen }) => {
   const toggleAddBookForm = () => {
     setAddBookFormOpen((isAddBookFormOpen) => !isAddBookFormOpen);
   };
+  const closeAddBookForm = () => {
+    setAddBookFormOpen(false);
+  };
 
   return (
     <div className="flex space-x-4">
@@ -26,7 +29,7 @@ const DesktopMenu = ({ toggleBookMenu, isBookMenuOpen }) => {
       <NavLink href="#" label="Projects" />
       <NavLink href="#" label="Calendar" />
 
-      {isAddBookFormOpen && <AddBookForm />}
+      {isAddBookFormOpen && <AddBookForm onClose={closeAddBookForm} />}
     </div>
   );
 };
