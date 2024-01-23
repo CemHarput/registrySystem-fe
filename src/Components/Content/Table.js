@@ -9,6 +9,19 @@ export default function Table() {
       .catch((error) => console.error("Error while fetching books:", error));
   }, []);
 
+  const formatCreatedAt = (createdAt) => {
+    const options = {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZoneName: "short",
+    };
+    return new Date(createdAt).toLocaleString("en-US", options);
+  };
+
   return (
     <div class="flex flex-col">
       <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -49,7 +62,7 @@ export default function Table() {
                       {book.stockQuantity}
                     </td>
                     <td class="whitespace-nowrap px-6 py-4">
-                      {book.CreatedAt}
+                      {formatCreatedAt(book.CreatedAt)}
                     </td>
                   </tr>
                 ))}

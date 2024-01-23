@@ -3,12 +3,42 @@ import React, { useState } from "react";
 const AddBookForm = ({ onClose }) => {
   const [isFormVisible, setFormVisible] = useState(true);
 
-  const handleSubmit = (e) => {
-    // Handle form submission logic here
-    // ...
+  const [book, addBook] = useState({
+    floating_book_title: "",
+    floating_author: "",
+    price_of_book: "",
+    book_quantity: "",
+  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // Close the form after submission (you may modify this based on your logic)
-    setFormVisible(false);
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/books", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(book),
+      });
+
+      if (response.ok) {
+        // Handle success, e.g., close the form
+        setFormVisible(false);
+        onClose(); // Notify the parent component about the modal closure
+      } else {
+        // Handle errors
+        console.error("Failed to add book:", response.status);
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    addBook((prevBook) => ({
+      ...prevBook,
+      [name]: value,
+    }));
   };
 
   const handleCancel = () => {
@@ -20,7 +50,7 @@ const AddBookForm = ({ onClose }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 z-40">
       <div className="bg-white p-10 rounded-md shadow-md">
-        <form class="max-w-md mx-auto">
+        <form onSubmit={handleSubmit} class="max-w-md mx-auto">
           <div class="relative z-0 w-full mb-6 group">
             <input
               type="text"
