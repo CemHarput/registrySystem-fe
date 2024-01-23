@@ -6,32 +6,16 @@ const Panel = () => {
     <div class="md:container md:mx-auto mt-8">
       <div class="flex justify-center flex-row space-x-4">
         <div class="basis-1/4">
-          <Card
-            title={PANEL_DATA[0].title}
-            description={PANEL_DATA[0].description}
-            image={PANEL_DATA[0].image}
-          />
+          <Card {...PANEL_DATA[0]} />
         </div>
         <div class="basis-1/4">
-          <Card
-            title={PANEL_DATA[1].title}
-            description={PANEL_DATA[1].description}
-            image={PANEL_DATA[1].image}
-          />
+          <Card {...PANEL_DATA[1]} />
         </div>
         <div class="basis-1/4">
-          <Card
-            title={PANEL_DATA[1].title}
-            description={PANEL_DATA[1].description}
-            image={PANEL_DATA[1].image}
-          />
+          <Card {...PANEL_DATA[2]} />
         </div>
         <div class="basis-1/4">
-          <Card
-            title={PANEL_DATA[1].title}
-            description={PANEL_DATA[1].description}
-            image={PANEL_DATA[1].image}
-          />
+          <Card {...PANEL_DATA[3]} />
         </div>
       </div>
     </div>
