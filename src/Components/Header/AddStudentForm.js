@@ -1,35 +1,73 @@
-import React from "react";
-
-const FormInput = ({ name, label, type = "text", required = true }) => (
-  <div className="relative z-0 w-full mb-5 group">
-    <input
-      type={type}
-      name={name}
-      id={name}
-      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-      placeholder=" "
-      required={required}
-    />
-    <label
-      htmlFor={name}
-      className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-    >
-      {label}
-    </label>
-  </div>
-);
-
-const FormButton = ({ onClick, children }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 ml-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-  >
-    {children}
-  </button>
-);
+import React, { useEffect, useState } from "react";
+import { FormInput, FormButton } from "./FormComponents";
 
 const AddStudentForm = ({ onClose }) => {
+  const [formData, setFormData] = useState({
+    student_name: "",
+    student_surname: "",
+    grades: "",
+    instructor: "", // Store instructor ID here
+  });
+
+  const [instructorOptions, setInstructorOptions] = useState([]);
+
+  useEffect(() => {
+    fetchInstructors();
+  }, []);
+
+  const fetchInstructors = () => {
+    fetch("http://localhost:8080/api/v1/instructor")
+      .then((response) => response.json())
+      .then((data) => {
+        const options = data.map((instructor) => ({
+          label: instructor.name,
+          value: instructor.id,
+        }));
+        setInstructorOptions(options);
+      })
+      .catch((error) => console.error("Error fetching instructors:", error));
+  };
+
+  const handleChange = (name, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { student_name, student_surname, grades, instructor } = formData;
+      const addGradeRequestDtoList = grades
+        .split(",")
+        .map((value) => ({ value: parseFloat(value) }));
+
+      const requestBody = {
+        name: student_name,
+        surname: student_surname,
+        addGradeRequestDtoList: addGradeRequestDtoList,
+        instructorId: instructor,
+      };
+
+      const response = await fetch("http://localhost:8080/api/v1/addStudent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      if (response.ok) {
+        console.log("Student added successfully!");
+        onClose();
+      } else {
+        console.error("Failed to add student:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error adding student:", error.message);
+    }
+  };
+
   const handleCancel = () => {
     onClose();
   };
@@ -37,16 +75,35 @@ const AddStudentForm = ({ onClose }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 z-40">
       <div className="bg-white p-10 rounded-md shadow-md">
-        <form className="max-w-md mx-auto">
-          <FormInput name="floating_book_title" label="Book Title" />
-          <FormInput name="floating_author" label="Author" />
+        <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+          {/* Pass appropriate props to FormInput components */}
           <FormInput
-            name="price_of_book"
-            label="Price"
-            type="number"
-            step="any"
+            name="student_name"
+            label="Name"
+            value={formData.student_name}
+            onChange={handleChange}
           />
-          <FormInput name="book_quantity" label="Quantity" type="number" />
+          <FormInput
+            name="student_surname"
+            label="Surname"
+            value={formData.student_surname}
+            onChange={handleChange}
+          />
+          <FormInput
+            name="grades"
+            label="Grades"
+            type="text"
+            value={formData.grades}
+            onChange={handleChange}
+          />
+          <FormInput
+            name="instructor"
+            label="Select Instructor"
+            type="select"
+            options={instructorOptions}
+            value={formData.instructor}
+            onChange={(name, value) => handleChange(name, value)}
+          />
           <button
             type="submit"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
