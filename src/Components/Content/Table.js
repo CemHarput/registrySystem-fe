@@ -46,7 +46,7 @@ export default function Table() {
                       className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
                     >
                       <td className="whitespace-nowrap px-6 py-4">
-                        {instructor.ID}
+                        {instructor.id}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {instructor.name}

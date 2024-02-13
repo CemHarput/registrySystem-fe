@@ -9,7 +9,9 @@ const AddStudentForm = ({ onClose }) => {
     instructor: "", // Store instructor ID here
   });
 
-  const [instructorOptions, setInstructorOptions] = useState([]);
+  const [instructorOptions, setInstructorOptions] = useState([
+    { label: "Select an Instructor", value: "" }, // Placeholder option
+  ]);
 
   useEffect(() => {
     fetchInstructors();
@@ -23,11 +25,13 @@ const AddStudentForm = ({ onClose }) => {
           label: instructor.name,
           value: instructor.id,
         }));
-        setInstructorOptions(options);
+        setInstructorOptions([
+          { label: "Select an Instructor", value: "" }, // Placeholder option
+          ...options,
+        ]);
       })
       .catch((error) => console.error("Error fetching instructors:", error));
   };
-
   const handleChange = (name, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -76,7 +80,6 @@ const AddStudentForm = ({ onClose }) => {
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 z-40">
       <div className="bg-white p-10 rounded-md shadow-md">
         <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
-          {/* Pass appropriate props to FormInput components */}
           <FormInput
             name="student_name"
             label="Name"
