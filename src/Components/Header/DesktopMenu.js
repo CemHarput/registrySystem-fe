@@ -1,35 +1,30 @@
 // DesktopMenu.js
 import React, { useState } from "react";
 import NavLink from "./Navlink";
-import BookDropDown from "./BookDropDown";
-import AddBookForm from "./AddBookForm";
+import AddBookForm from "./AddStudentForm";
 
-const DesktopMenu = ({ toggleBookMenu, isBookMenuOpen }) => {
-  const [isAddBookFormOpen, setAddBookFormOpen] = useState(false);
+const DesktopMenu = ({}) => {
+  const [isStudentFormOpen, setAddStudentFormOpen] = useState(false);
 
-  const toggleAddBookForm = () => {
-    setAddBookFormOpen((isAddBookFormOpen) => !isAddBookFormOpen);
+  const toggleAddStudentForm = () => {
+    setAddStudentFormOpen((isAddStudentFormOpen) => !isAddStudentFormOpen);
   };
-  const closeAddBookForm = () => {
-    setAddBookFormOpen(false);
+
+  const closeAddStudentForm = () => {
+    setAddStudentFormOpen(false);
   };
 
   return (
     <div className="flex">
-      <NavLink href="#" label="Dashboard" />
+      <NavLink href="#" label="Instructor Operations" />
       <button
-        onClick={toggleBookMenu}
         className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
         aria-haspopup="true"
-        aria-expanded={isBookMenuOpen}
+        onClick={toggleAddStudentForm}
       >
-        Book Operations
+        Add a Student
       </button>
-      {isBookMenuOpen && <BookDropDown onAddBookClick={toggleAddBookForm} />}
-      <NavLink href="#" label="Projects" />
-      <NavLink href="#" label="Calendar" />
-
-      {isAddBookFormOpen && <AddBookForm onClose={closeAddBookForm} />}
+      {isStudentFormOpen && <AddBookForm onClose={closeAddStudentForm} />}
     </div>
   );
 };

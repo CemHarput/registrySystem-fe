@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import UserMenu from "./UserMenu";
 import NavLink from "./Navlink";
-import NotificationIcon from "./NotificationIcon";
 import DesktopMenu from "./DesktopMenu";
 
 const Navbar = () => {
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isBookMenuOpen, setIsBookMenuOpen] = useState(false);
 
-  const toggleUserMenu = () => {
-    setIsUserMenuOpen((isUserMenuOpen) => !isUserMenuOpen);
-  };
   const toggleBookMenu = () => {
     setIsBookMenuOpen((isBookMenuOpen) => !isBookMenuOpen);
   };
@@ -61,13 +55,7 @@ const Navbar = () => {
           </div>
 
           {/* Logo */}
-          <div className="flex flex-shrink-0 items-center">
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-              alt="Your Company"
-            />
-          </div>
+          <div className="flex flex-shrink-0 items-center"></div>
 
           {/* Desktop Menu */}
           <div className="hidden sm:ml-6 sm:flex sm:items-start sm:justify-start">
@@ -76,20 +64,7 @@ const Navbar = () => {
               isBookMenuOpen={isBookMenuOpen}
             />
           </div>
-          {/* Notification and User Menu */}
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
-              type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              {/* Notification Icon */}
-              <NotificationIcon />
-            </button>
-            <UserMenu
-              toggleUserMenu={toggleUserMenu}
-              isUserMenuOpen={isUserMenuOpen}
-            />
-          </div>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"></div>
         </div>
       </div>
 
