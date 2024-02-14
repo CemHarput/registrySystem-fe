@@ -14,6 +14,36 @@ export default function StudentTable() {
       );
   }, []);
 
+  const handleDelete = async (studentId, gradeId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/student/${studentId}/grades/${gradeId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        // Remove the deleted grade from the state
+        setStudents((prevStudents) => {
+          const updatedStudents = prevStudents.map((student) => {
+            if (student.id === studentId) {
+              // Filter out the deleted grade from the student's grades array
+              student.grades = student.grades.filter(
+                (grade) => grade.id !== gradeId
+              );
+            }
+            return student;
+          });
+          return updatedStudents;
+        });
+      } else {
+        console.error("Failed to delete grade:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting grade:", error.message);
+    }
+  };
+
   return (
     <div className="flex justify-center">
       <div className="w-1/2">
@@ -68,8 +98,13 @@ export default function StudentTable() {
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <div className="flex items-center">
-                              <PencilSquareIcon className="h-6 w-6 text-blue-500 mr-2 hover:text-blue-700" />
-                              <TrashIcon className="h-6 w-6 text-red-500 hover:text-red-700" />
+                              <PencilSquareIcon className="h-6 w-6 text-blue-500 mr-2 hover:text-blue-700 cursor-pointer" />
+                              <TrashIcon
+                                className="h-6 w-6 text-red-500 hover:text-red-700 cursor-pointer"
+                                onClick={() =>
+                                  handleDelete(student.id, grade.id)
+                                }
+                              />
                             </div>
                           </td>
                         </tr>
