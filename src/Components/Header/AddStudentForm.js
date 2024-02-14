@@ -10,7 +10,7 @@ const AddStudentForm = ({ onClose }) => {
   });
 
   const [instructorOptions, setInstructorOptions] = useState([
-    { label: "Select an Instructor", value: "" }, // Placeholder option
+    { label: "Select an Instructor", value: "" },
   ]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const AddStudentForm = ({ onClose }) => {
           value: instructor.id,
         }));
         setInstructorOptions([
-          { label: "Select an Instructor", value: "" }, // Placeholder option
+          { label: "Select an Instructor", value: "" },
           ...options,
         ]);
       })
@@ -45,7 +45,7 @@ const AddStudentForm = ({ onClose }) => {
       const { student_name, student_surname, grades, instructor } = formData;
       const addGradeRequestDtoList = grades
         .split(",")
-        .map((value) => ({ value: parseFloat(value) }));
+        .map((value) => ({ value: parseFloat(value.trim()) }));
 
       const requestBody = {
         name: student_name,

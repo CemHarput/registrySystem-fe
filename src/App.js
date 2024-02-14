@@ -1,5 +1,5 @@
 import "./App.css";
-import Table from "./Components/Content/Table";
+import InstructorTable from "./Components/Content/InstructorTable";
 import Navbar from "./Components/Header/Navbar";
 import TabMenu from "./Components/Product/TabMenu";
 
@@ -8,7 +8,6 @@ function App() {
     <>
       <Navbar></Navbar>
       <TabMenu></TabMenu>
-      <Table></Table>
     </>
   );
 }

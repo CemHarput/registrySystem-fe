@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function Table() {
+export default function InstructorTable() {
   const [instructors, setInstructors] = useState([]);
 
   useEffect(() => {
@@ -14,11 +14,7 @@ export default function Table() {
 
   return (
     <div className="flex justify-center">
-      {" "}
-      {/* Center horizontally */}
       <div className="w-1/2">
-        {" "}
-        {/* Set width to 50% */}
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">

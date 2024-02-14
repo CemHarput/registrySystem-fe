@@ -5,9 +5,11 @@ import Card from "../Content/Card";
 import starPicture from "../../assets/star.png";
 import Section from "./Section";
 import Tabs from "./Tabs";
+import StudentTable from "../Content/StudentTable";
+import InstructorTable from "../Content/InstructorTable";
 
 const TabMenu = () => {
-  const [selectedProduct, setSelectedProduct] = useState("Product1");
+  const [selectedProduct, setSelectedProduct] = useState("Instructor Table");
 
   function handleSelect(selectedButton) {
     setSelectedProduct(selectedButton);
@@ -18,28 +20,16 @@ const TabMenu = () => {
 
       <Tabs>
         <TabButton
-          onSelect={() => handleSelect("Product1")}
-          isSelected={selectedProduct === "Product1"}
+          onSelect={() => handleSelect("Student Table")}
+          isSelected={selectedProduct === "Student Table"}
         >
-          Product1
+          Student Table
         </TabButton>
         <TabButton
-          onSelect={() => handleSelect("Product2")}
-          isSelected={selectedProduct === "Product2"}
+          onSelect={() => handleSelect("Instructor Table")}
+          isSelected={selectedProduct === "Instructor Table"}
         >
-          Product2
-        </TabButton>
-        <TabButton
-          onSelect={() => handleSelect("Product3")}
-          isSelected={selectedProduct === "Product3"}
-        >
-          Product3
-        </TabButton>
-        <TabButton
-          onSelect={() => handleSelect("Product4")}
-          isSelected={selectedProduct === "Product4"}
-        >
-          Product4
+          Instructor Table
         </TabButton>
       </Tabs>
       <div class="flex justify-center flex-row mt-5">
@@ -49,6 +39,12 @@ const TabMenu = () => {
           image={starPicture}
         />
       </div>
+
+      {selectedProduct === "Student Table" ? (
+        <StudentTable />
+      ) : (
+        <InstructorTable />
+      )}
     </div>
   );
 };
