@@ -23,11 +23,9 @@ export default function StudentTable() {
         }
       );
       if (response.ok) {
-        // Remove the deleted grade from the state
         setStudents((prevStudents) => {
           const updatedStudents = prevStudents.map((student) => {
             if (student.id === studentId) {
-              // Filter out the deleted grade from the student's grades array
               student.grades = student.grades.filter(
                 (grade) => grade.id !== gradeId
               );
@@ -41,6 +39,35 @@ export default function StudentTable() {
       }
     } catch (error) {
       console.error("Error deleting grade:", error.message);
+    }
+  };
+
+  const [editableGrade, setEditableGrade] = useState(null);
+
+  const handleEdit = (studentId, gradeId) => {
+    setEditableGrade({ studentId, gradeId });
+  };
+
+  const handleSave = async (studentId, gradeId, newValue) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/student/${studentId}/grades/${gradeId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ value: newValue }),
+        }
+      );
+      if (response.ok) {
+        console.log("Grade updated successfully");
+        setEditableGrade(null);
+      } else {
+        console.error("Failed to update grade:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating grade:", error.message);
     }
   };
 
@@ -94,11 +121,51 @@ export default function StudentTable() {
                             {student.instructorName}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
-                            <span>{grade.value}</span>
+                            {editableGrade &&
+                            editableGrade.studentId === student.id &&
+                            editableGrade.gradeId === grade.id ? (
+                              <input
+                                type="text"
+                                value={grade.value}
+                                onChange={(e) => {
+                                  const newValue = e.target.value;
+                                  setStudents((prevStudents) =>
+                                    prevStudents.map((prevStudent) => {
+                                      if (prevStudent.id === student.id) {
+                                        prevStudent.grades =
+                                          prevStudent.grades.map((prevGrade) =>
+                                            prevGrade.id === grade.id
+                                              ? {
+                                                  ...prevGrade,
+                                                  value: newValue,
+                                                }
+                                              : prevGrade
+                                          );
+                                      }
+                                      return prevStudent;
+                                    })
+                                  );
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    handleSave(
+                                      student.id,
+                                      grade.id,
+                                      e.target.value
+                                    );
+                                  }
+                                }}
+                              />
+                            ) : (
+                              <span>{grade.value}</span>
+                            )}
                           </td>
                           <td className="whitespace-nowrap px-6 py-4">
                             <div className="flex items-center">
-                              <PencilSquareIcon className="h-6 w-6 text-blue-500 mr-2 hover:text-blue-700 cursor-pointer" />
+                              <PencilSquareIcon
+                                className="h-6 w-6 text-blue-500 mr-2 hover:text-blue-700 cursor-pointer"
+                                onClick={() => handleEdit(student.id, grade.id)}
+                              />
                               <TrashIcon
                                 className="h-6 w-6 text-red-500 hover:text-red-700 cursor-pointer"
                                 onClick={() =>

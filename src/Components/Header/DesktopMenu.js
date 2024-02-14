@@ -16,7 +16,7 @@ const DesktopMenu = ({}) => {
 
   return (
     <div className="flex">
-      <NavLink href="#" label="Instructor Operations" />
+      <NavLink href="#" label="Add a Grade" />
       <button
         className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
         aria-haspopup="true"

@@ -6,7 +6,7 @@ const AddStudentForm = ({ onClose }) => {
     student_name: "",
     student_surname: "",
     grades: "",
-    instructor: "", // Store instructor ID here
+    instructor: "",
   });
 
   const [instructorOptions, setInstructorOptions] = useState([
