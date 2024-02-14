@@ -64,6 +64,7 @@ const AddStudentForm = ({ onClose }) => {
       if (response.ok) {
         console.log("Student added successfully!");
         onClose();
+        window.location.reload();
       } else {
         console.error("Failed to add student:", response.statusText);
       }
