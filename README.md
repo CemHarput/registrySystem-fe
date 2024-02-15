@@ -74,3 +74,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ![Image Alt Text](/images/2.png)
 ![Image Alt Text](/images/3.png)
 ![Image Alt Text](/images/4.png)
+![Image Alt Text](/images/Capture.PNG)
