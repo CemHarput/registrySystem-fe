@@ -6,7 +6,7 @@ const AddGradeForm = ({ onClose }) => {
     grades: "",
     student: "",
   });
-
+  const [error, setError] = useState(null);
   const [studentsOptions, setStudentOptions] = useState([
     { label: "Select an Student", value: "" },
   ]);
@@ -33,6 +33,13 @@ const AddGradeForm = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { student, grades } = formData;
+
+    const parsedGrades = parseFloat(grades);
+    if (isNaN(parsedGrades) || parsedGrades < 0 || parsedGrades > 100) {
+      setError("Grades must be a number between 0.0 and 100.0.");
+      return;
+    }
+    setError(null);
     if (student) {
       const requestBody = {
         value: grades,
@@ -74,6 +81,9 @@ const AddGradeForm = ({ onClose }) => {
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 z-40">
       <div className="bg-white p-10 rounded-md shadow-md">
         <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+          <div className="mb-5">
+            {error && <div className="text-red-500">{error}</div>}
+          </div>
           <FormInput
             name="grades"
             label="Grades"

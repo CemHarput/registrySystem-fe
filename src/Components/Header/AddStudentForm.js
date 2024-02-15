@@ -8,7 +8,7 @@ const AddStudentForm = ({ onClose }) => {
     grades: "",
     instructor: "",
   });
-
+  const [error, setError] = useState(null);
   const [instructorOptions, setInstructorOptions] = useState([
     { label: "Select an Instructor", value: "" },
   ]);
@@ -47,6 +47,15 @@ const AddStudentForm = ({ onClose }) => {
         .split(",")
         .map((value) => ({ value: parseFloat(value.trim()) }));
 
+      if (
+        addGradeRequestDtoList.some(
+          (dto) => isNaN(dto.value) || dto.value < 0.0 || dto.value > 100.0
+        )
+      ) {
+        setError("Grades must be a number between 0.0 and 100.0.");
+        return;
+      }
+
       const requestBody = {
         name: student_name,
         surname: student_surname,
@@ -81,6 +90,9 @@ const AddStudentForm = ({ onClose }) => {
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 z-40">
       <div className="bg-white p-10 rounded-md shadow-md">
         <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+          <div className="mb-5">
+            {error && <div className="text-red-500">{error}</div>}
+          </div>
           <FormInput
             name="student_name"
             label="Name"

@@ -35,7 +35,7 @@ const TabMenu = () => {
       <div class="flex justify-center flex-row mt-5">
         <Card
           title={selectedProduct}
-          description={"Description will be added later"}
+          description={"You can show the all records in the table"}
           image={starPicture}
         />
       </div>
