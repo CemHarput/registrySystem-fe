@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/solid";
+import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 
 export default function StudentTable() {
   const [students, setStudents] = useState([]);
+  const [sortByGradeAsc, setSortByGradeAsc] = useState(true);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/student")
@@ -70,6 +72,18 @@ export default function StudentTable() {
       console.error("Error updating grade:", error.message);
     }
   };
+  const handleSortByGrade = () => {
+    setSortByGradeAsc((prevSortByGradeAsc) => !prevSortByGradeAsc);
+    setStudents((prevStudents) => {
+      const sortedStudents = [...prevStudents];
+      sortedStudents.forEach((student) => {
+        student.grades.sort((a, b) =>
+          sortByGradeAsc ? a.value - b.value : b.value - a.value
+        );
+      });
+      return sortedStudents;
+    });
+  };
 
   return (
     <div className="flex justify-center">
@@ -92,8 +106,17 @@ export default function StudentTable() {
                     <th scope="col" className="px-6 py-4">
                       Instructor
                     </th>
-                    <th scope="col" className="px-6 py-4">
-                      Grades
+                    <th
+                      scope="col"
+                      className="px-6 py-4 flex items-center cursor-pointer"
+                      onClick={handleSortByGrade}
+                    >
+                      <span className="mr-2">Grades</span>
+                      {sortByGradeAsc ? (
+                        <ChevronUpDownIcon className="h-4 w-4" />
+                      ) : (
+                        <ChevronUpDownIcon className="h-4 w-4" />
+                      )}
                     </th>
                     <th scope="col" className="px-6 py-4">
                       Operation
